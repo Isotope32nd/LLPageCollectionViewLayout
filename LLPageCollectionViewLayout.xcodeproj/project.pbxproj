@@ -15,6 +15,9 @@
 		CE2015972005A37200C5A980 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2015962005A37200C5A980 /* main.m */; };
 		CE2015A12005A37200C5A980 /* LLPageCollectionViewLayoutTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2015A02005A37200C5A980 /* LLPageCollectionViewLayoutTests.m */; };
 		CE2015AC2005A37200C5A980 /* LLPageCollectionViewLayoutUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2015AB2005A37200C5A980 /* LLPageCollectionViewLayoutUITests.m */; };
+		CE2015BC2005A3CD00C5A980 /* LLPageCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2015BB2005A3CD00C5A980 /* LLPageCollectionViewLayout.m */; };
+		CE2015C02005A60900C5A980 /* LLTestCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2015BE2005A60900C5A980 /* LLTestCollectionViewCell.m */; };
+		CE2015C12005A60900C5A980 /* LLTestCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE2015BF2005A60900C5A980 /* LLTestCollectionViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +54,11 @@
 		CE2015A72005A37200C5A980 /* LLPageCollectionViewLayoutUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LLPageCollectionViewLayoutUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE2015AB2005A37200C5A980 /* LLPageCollectionViewLayoutUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LLPageCollectionViewLayoutUITests.m; sourceTree = "<group>"; };
 		CE2015AD2005A37200C5A980 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CE2015BA2005A3CD00C5A980 /* LLPageCollectionViewLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LLPageCollectionViewLayout.h; sourceTree = "<group>"; };
+		CE2015BB2005A3CD00C5A980 /* LLPageCollectionViewLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LLPageCollectionViewLayout.m; sourceTree = "<group>"; };
+		CE2015BD2005A60900C5A980 /* LLTestCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LLTestCollectionViewCell.h; sourceTree = "<group>"; };
+		CE2015BE2005A60900C5A980 /* LLTestCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LLTestCollectionViewCell.m; sourceTree = "<group>"; };
+		CE2015BF2005A60900C5A980 /* LLTestCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LLTestCollectionViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,10 +109,14 @@
 		CE2015862005A37200C5A980 /* LLPageCollectionViewLayout */ = {
 			isa = PBXGroup;
 			children = (
+				CE2015B92005A38200C5A980 /* LLPageCollectionViewLayout */,
 				CE2015872005A37200C5A980 /* AppDelegate.h */,
 				CE2015882005A37200C5A980 /* AppDelegate.m */,
 				CE20158A2005A37200C5A980 /* ViewController.h */,
 				CE20158B2005A37200C5A980 /* ViewController.m */,
+				CE2015BD2005A60900C5A980 /* LLTestCollectionViewCell.h */,
+				CE2015BE2005A60900C5A980 /* LLTestCollectionViewCell.m */,
+				CE2015BF2005A60900C5A980 /* LLTestCollectionViewCell.xib */,
 				CE20158D2005A37200C5A980 /* Main.storyboard */,
 				CE2015902005A37200C5A980 /* Assets.xcassets */,
 				CE2015922005A37200C5A980 /* LaunchScreen.storyboard */,
@@ -130,6 +142,15 @@
 				CE2015AD2005A37200C5A980 /* Info.plist */,
 			);
 			path = LLPageCollectionViewLayoutUITests;
+			sourceTree = "<group>";
+		};
+		CE2015B92005A38200C5A980 /* LLPageCollectionViewLayout */ = {
+			isa = PBXGroup;
+			children = (
+				CE2015BA2005A3CD00C5A980 /* LLPageCollectionViewLayout.h */,
+				CE2015BB2005A3CD00C5A980 /* LLPageCollectionViewLayout.m */,
+			);
+			path = LLPageCollectionViewLayout;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -238,6 +259,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE2015C12005A60900C5A980 /* LLTestCollectionViewCell.xib in Resources */,
 				CE2015942005A37200C5A980 /* LaunchScreen.storyboard in Resources */,
 				CE2015912005A37200C5A980 /* Assets.xcassets in Resources */,
 				CE20158F2005A37200C5A980 /* Main.storyboard in Resources */,
@@ -266,6 +288,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE20158C2005A37200C5A980 /* ViewController.m in Sources */,
+				CE2015C02005A60900C5A980 /* LLTestCollectionViewCell.m in Sources */,
+				CE2015BC2005A3CD00C5A980 /* LLPageCollectionViewLayout.m in Sources */,
 				CE2015972005A37200C5A980 /* main.m in Sources */,
 				CE2015892005A37200C5A980 /* AppDelegate.m in Sources */,
 			);
