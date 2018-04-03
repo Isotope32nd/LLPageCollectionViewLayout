@@ -23,13 +23,43 @@
         self.minimumInteritemSpacing = 0;
         self.itemSize = CGSizeZero;
         
+        
     }
     return self;
 }
 
+
 - (void)prepareLayout {
     [super prepareLayout];
     
+    CGSize singlePageSize = self.collectionView.bounds.size;
+    CGFloat widthWithoutInset = singlePageSize.width - _pageInset.left - _pageInset.right;
+    CGFloat heightWithoutInset = singlePageSize.height - _pageInset.top - _pageInset.bottom;
+    
+    //计算item size或者每页的行数和列数
+    if (!CGSizeEqualToSize(_itemSize, CGSizeZero)) {
+        //设置了itemSize，计算行数和列数
+        NSInteger maximumColumns = (widthWithoutInset + _minimumInteritemSpacing) / (_itemSize.width + _minimumInteritemSpacing);
+        NSInteger maximumRows = (heightWithoutInset + _minimumLineSpacing) / (_itemSize.height + _minimumLineSpacing);
+        
+        _caculatedColumnsAPage = maximumColumns;
+        _caculatedNumberOfRows = maximumRows;
+        
+        _calculatedItemSize = _itemSize;
+        
+    } else if (_numberOfRows > 0 && _columnsAPage > 0) {
+        //设置了numberOfORows和columnsAPage，计算itemSize
+        CGFloat width = (widthWithoutInset - (_columnsAPage - 1) * _minimumInteritemSpacing) / _columnsAPage;
+        CGFloat height = (heightWithoutInset - (_numberOfRows - 1) * _minimumLineSpacing) / _numberOfRows;
+        
+        _calculatedItemSize = CGSizeMake(width, height);
+        
+        _caculatedNumberOfRows = _numberOfRows;
+        _caculatedColumnsAPage = _columnsAPage;
+    }
+    
+    
+    /*
     NSInteger numberOfItems = [self.collectionView numberOfItemsInSection:0];
     NSInteger rows = _numberOfRows;
     if (numberOfItems < _numberOfRows * _columnsAPage) {
@@ -60,6 +90,7 @@
         [attrArray addObject:attrs];
     }
     _currentAttributes = [NSArray arrayWithArray:attrArray];
+     */
 }
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds {
@@ -69,38 +100,39 @@
 
 - (CGSize)collectionViewContentSize {
     
-    NSInteger count = [self.collectionView numberOfItemsInSection:0];
+    NSInteger numberOfPages = 0;
+//    for (int i = 0; i < [self.collectionView numberOfSections]; i++) {
+//        NSInteger count = [self.collectionView numberOfItemsInSection:i];
+//
+//        NSInteger numberOfItemsOnAPage = _caculatedNumberOfRows * _caculatedColumnsAPage;
+//        NSInteger pages = ceil(count / (double)numberOfItemsOnAPage);
+//        numberOfPages += pages;
+//    }
+//    
+//    if (numberOfPages == 0) {
+//        numberOfPages = 1;
+//    }
     
-    NSInteger numberOfItemsOnAPage = self.numberOfRows * self.columnsAPage;
-    NSInteger pages = ceil(count / (double)numberOfItemsOnAPage);
+    numberOfPages = [self pagesBeforeSection:[self.collectionView numberOfSections]];
     
-    /*
-     CGFloat pageWidth = self.pageInset.left + self.pageInset.right + (self.itemSize.width + self.minimumInteritemSpacing) * self.columnsAPage - self.minimumInteritemSpacing;
-     
-     CGFloat width = pages * pageWidth;
-     
-     CGFloat height = self.pageInset.top + self.pageInset.bottom + self.itemSize.height * self.numberOfRows + self.minimumLineSpacing;
-     
-     return CGSizeMake(width, height);
-     */
-    
-    return CGSizeMake(self.collectionView.bounds.size.width * pages, self.collectionView.bounds.size.height);
+    return CGSizeMake(self.collectionView.bounds.size.width * numberOfPages, self.collectionView.bounds.size.height);
 }
 
 - (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    NSInteger pageSize = self.numberOfRows * self.columnsAPage;
+    NSInteger pageSize = _caculatedNumberOfRows * _caculatedColumnsAPage;
     //页码
-    NSInteger page = indexPath.item / pageSize;
+    NSInteger beforePages = [self pagesBeforeSection:indexPath.section];
+    NSInteger page = indexPath.item / pageSize + beforePages;
     
     NSInteger indexOnPage = indexPath.item % pageSize;
-    NSInteger column = indexOnPage % self.columnsAPage;
-    NSInteger row = indexOnPage / self.columnsAPage;
+    NSInteger column = indexOnPage % _caculatedColumnsAPage;
+    NSInteger row = indexOnPage / _caculatedColumnsAPage;
     
     CGSize size = _calculatedItemSize;
-    if (!CGSizeEqualToSize(_itemSize, CGSizeZero)) {
-        size = _itemSize;
-    }
+//    if (!CGSizeEqualToSize(_itemSize, CGSizeZero)) {
+//        size = _itemSize;
+//    }
     
     CGFloat itemX = self.pageInset.left + (size.width + self.minimumInteritemSpacing) * column + page * self.collectionView.bounds.size.width;
     
@@ -113,9 +145,39 @@
     
 }
 
+
 - (NSArray<UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect {
     
-    return _currentAttributes;
+    NSMutableArray *attributesArray = [NSMutableArray array];
+    for (NSInteger section = 0; section < [self.collectionView numberOfSections]; section++) {
+        for (NSInteger item = 0; item < [self.collectionView numberOfItemsInSection:section]; item++) {
+            UICollectionViewLayoutAttributes *layoutAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:item inSection:section]];
+            [attributesArray addObject:layoutAttributes];
+        }
+    }
+    
+    return attributesArray;
+}
+
+- (NSInteger)pagesOfSection:(NSInteger)section {
+    
+    NSInteger count = [self.collectionView numberOfItemsInSection:section];
+    
+    NSInteger numberOfItemsOnAPage = _caculatedNumberOfRows * _caculatedColumnsAPage;
+    NSInteger pages = ceil(count / (double)numberOfItemsOnAPage);
+    
+    return pages;
+}
+
+- (NSInteger)pagesBeforeSection:(NSInteger)section {
+    
+    NSInteger totalPages = 0;
+    for (int i = 0; i < section; i++) {
+        NSInteger pages = [self pagesOfSection:i];
+        totalPages += pages;
+    }
+    
+    return totalPages;
 }
 
 @end

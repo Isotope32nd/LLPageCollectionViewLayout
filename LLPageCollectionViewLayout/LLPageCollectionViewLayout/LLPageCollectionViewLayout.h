@@ -12,6 +12,9 @@
     
     CGSize _calculatedItemSize;
     
+    NSInteger _caculatedNumberOfRows;
+    NSInteger _caculatedColumnsAPage;
+    
     NSArray<UICollectionViewLayoutAttributes *> *_currentAttributes;
 }
 
